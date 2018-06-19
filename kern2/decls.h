@@ -29,12 +29,12 @@ void keyboard_asm(void);
 
 // handlers.c
 void timer(void);
-void keyboard(void);
+void keyboard(void);*/
 
 // funcs.S
 __attribute__((regparm(3))) void vga_write2(const char *s,
                                             int8_t linea,
-                                            uint8_t color);*/
+                                            uint8_t color);
 
 // kern2.c
 void two_stacks_c(void);
