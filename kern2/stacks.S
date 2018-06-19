@@ -54,7 +54,7 @@ two_stacks:
         call vga_write
 
         // Restaurar registros callee-saved, si se usaron.
-        //...
+
 
         leave
         ret

@@ -56,9 +56,6 @@ void two_stacks_c() {
 
     // Primera llamada usando task_exec().
     //task_exec((uintptr_t) vga_write, (uintptr_t) s1);
-	asm("leal 0(%0), %%esp; call *%1; movl %%ebp, %%esp"
-        : /* no outputs */
-        : "r"(a), "r"(vga_write));
 
     // Segunda llamada con ASM directo. Importante: no
     // olvidar restaurar el valor de %esp al terminar, y
