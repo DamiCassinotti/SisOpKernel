@@ -55,7 +55,7 @@ void two_stacks_c() {
     b[0] = (uintptr_t) "vga_write() from stack2";
 
     // Primera llamada usando task_exec().
-    //task_exec((uintptr_t) vga_write, (uintptr_t) s1);
+    task_exec((uintptr_t) vga_write, (uintptr_t) a);
 
     // Segunda llamada con ASM directo. Importante: no
     // olvidar restaurar el valor de %esp al terminar, y
