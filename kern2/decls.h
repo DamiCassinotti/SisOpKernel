@@ -47,6 +47,11 @@ void vga_write(const char *s, int8_t linea, uint8_t color);
 
 // tasks.S
 void task_exec(uintptr_t entry, uintptr_t stack);
+void task_swap(uintptr_t *esp);
+
+// contador.c
+void contador_run();
+
 
 //__attribute__((regparm(2))) void vga_write_cyan(const char *s, int8_t linea);
 

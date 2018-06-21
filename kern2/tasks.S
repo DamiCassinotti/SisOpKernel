@@ -9,17 +9,19 @@ task_exec:
 	leave
 	ret
 
-.globl vga_write2
-vga_write2:
-    push %ebp
-    movl %esp, %ebp
+.globl task_swap
+task_swap:
+	push %ebp
+	push %ebx
+	push %edi
+	push %esi
 
-    push %ecx
-	push %edx
-	push %eax
-    call vga_write
+	mov 20(%esp), %ecx
+    mov %esp, $eax
+    mov %ecx, %esp
 
-	movl %ebp, %esp
-
-    leave
-    ret
+	pop %esi
+	pop %edi
+	pop %ebx
+	pop %ebp
+	ret
