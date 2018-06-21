@@ -16,9 +16,10 @@ task_swap:
 	push %edi
 	push %esi
 
-	mov 20(%esp), %ecx
-    mov %esp, $eax
-    mov %ecx, %esp
+	movl 20(%esp), %edx
+    movl %esp, %eax
+    movl (%edx), %esp
+	movl %eax, (%edx)
 
 	pop %esi
 	pop %edi

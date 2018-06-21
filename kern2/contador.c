@@ -16,6 +16,8 @@ static void yield() {
         task_swap(&esp);
 }
 
+static void false_ret() {}
+
 static void contador_yield(unsigned lim, uint8_t linea, char color) {
     char counter[COUNTLEN] = {'0'};  // ASCII digit counter (RTL).
 
@@ -58,6 +60,7 @@ void contador_run() {
 	*(--b) = 0x4F;
 	*(--b) = 1;
 	*(--b) = 1000;
+	*(--b) = (uintptr_t) false_ret;
 	*(--b) = (uintptr_t) contador_yield;
 	*(--b) = 0;
 	*(--b) = 0;
