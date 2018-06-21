@@ -45,6 +45,6 @@ halt:
     jmp halt
 
 .data
-.p2align 10
+.p2align 12
 kstack:
     .space KSTACK_SIZE
