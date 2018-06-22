@@ -55,11 +55,11 @@ void contador_run() {
 
 	*(--a) = 0x2F;
 	*(--a) = 0;
-	*(--a) = 1000;
+	*(--a) = 100;
 
 	*(--b) = 0x4F;
 	*(--b) = 1;
-	*(--b) = 1000;
+	*(--b) = 100;
 	*(--b) = (uintptr_t) false_ret;
 	*(--b) = (uintptr_t) contador_yield;
 	*(--b) = 0;
