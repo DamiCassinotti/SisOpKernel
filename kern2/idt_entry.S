@@ -14,9 +14,9 @@ breakpoint:
 	// (3) Invocar a vga_write2()
 	call vga_write2
 	// (4) Restaurar registros.
-	pop %eax
-	pop %edx
 	pop %ecx
+	pop %edx
+	pop %eax
 	// (5) Finalizar ejecución del manejador.
 	iret
 
@@ -40,9 +40,9 @@ timer_asm:
 
     call timer
     // Restaurar registros.
-	pop %eax
-	pop %edx
 	pop %ecx
+	pop %edx
+	pop %eax
     jmp ack_irq
 
 .globl divzero
@@ -57,10 +57,10 @@ divzero:
 	movl $17, %edx
     call vga_write_cyan
     // Restaurar registros.
-	pop %eax
-	pop %edx
 	pop %ecx
-    jmp ack_irq
+	pop %edx
+	pop %eax
+    iret
 
 .data
 divzero_msg:
