@@ -35,7 +35,7 @@ void idt_install(uint8_t code, void (*handler)(void));
 void irq_init(void);
 
 // idt_entry.S
-// void divzero(void);
+void divzero(void);
 void breakpoint(void);
 void ack_irq(void);
 void timer_asm(void);
@@ -46,6 +46,6 @@ void timer_asm(void);
 void timer(void);
 // void keyboard(void);
 
-//__attribute__((regparm(2))) void vga_write_cyan(const char *s, int8_t linea);
+__attribute__((regparm(2))) void vga_write_cyan(const char *s, int8_t linea);
 
 #endif

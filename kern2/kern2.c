@@ -4,6 +4,8 @@
 #define USTACK_SIZE 4096
 
 void kmain(const multiboot_info_t *mbi) {
+	int8_t linea;
+    uint8_t color;
 	vga_write("kern2 loading.............", 8, 0x70);
 
 	if (mbi->flags & (1<<2)) {
@@ -19,9 +21,12 @@ void kmain(const multiboot_info_t *mbi) {
 
     idt_init();
 	irq_init();
-    asm("int3");
+	asm("int3");
+	asm("div %4"
+        : "=a"(linea), "=c"(color)
+        : "0"(18), "1"(0xE0), "b"(0), "d"(0));
 
-	vga_write2("Funciona vga_write2?", 18, 0xE0);
+	vga_write2("Funciona vga_write2?", linea, color);
 }
 
 static uint8_t stack1[USTACK_SIZE] __attribute__((aligned(4096)));

@@ -44,3 +44,24 @@ timer_asm:
 	pop %edx
 	pop %ecx
     jmp ack_irq
+
+.globl divzero
+divzero:
+    // Guardar registros.
+	push %eax
+	push %edx
+	push %ecx
+
+	inc %ebx
+	movl $divzero_msg, %eax
+	movl $17, %edx
+    call vga_write_cyan
+    // Restaurar registros.
+	pop %eax
+	pop %edx
+	pop %ecx
+    jmp ack_irq
+
+.data
+divzero_msg:
+    .asciz "Se divide por ++ebx"
