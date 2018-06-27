@@ -1,4 +1,5 @@
 #include "decls.h"
+#include "sched.h"
 
 #define COUNTLEN 20
 #define TICKS (1ULL << 15)
@@ -80,4 +81,22 @@ void contador_run() {
 
     //contador_yield(1000, 0, 0x2F);
     //contador_yield(1000, 1, 0x4F);
+}
+
+static void contador1() {
+    contador_yield(50000000, 2, 0x2F);
+}
+
+static void contador2() {
+    contador_yield(50000000, 3, 0x6F);
+}
+
+static void contador3() {
+    contador_yield(50000000, 4, 0x4F);
+}
+
+void contador_spawn() {
+    spawn(contador1);
+    spawn(contador2);
+    spawn(contador3);
 }
