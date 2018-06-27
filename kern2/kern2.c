@@ -1,9 +1,13 @@
 #include "decls.h"
+#include "sched.h"
 #define USTACK_SIZE 4096
 
 void kmain(const multiboot_info_t *mbi) {
 	int8_t linea;
     uint8_t color;
+	sched_init();
+	idt_init();
+	irq_init();
 	vga_write("kern2 loading.............", 8, 0x70);
 
 	print_mbinfo(mbi);
@@ -12,8 +16,6 @@ void kmain(const multiboot_info_t *mbi) {
 	two_stacks_c();
 	contador_run();
 
-    idt_init();
-	irq_init();
 	asm("int3");
 	asm("div %4"
         : "=a"(linea), "=c"(color)
