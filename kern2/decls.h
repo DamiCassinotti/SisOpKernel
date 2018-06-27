@@ -51,6 +51,6 @@ void timer_asm(void);
 
 // handlers.c
 void timer(void);
-// void keyboard(void);
+void keyboard(void);
 
 #endif

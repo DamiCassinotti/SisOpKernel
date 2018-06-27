@@ -58,7 +58,7 @@ void irq_init() {
 
     // (2) Instalar manejadores.
 	idt_install(T_TIMER, timer_asm);
-    idt_install(T_KEYBOARD, ack_irq);
+    idt_install(T_KEYBOARD, keyboard);
 	idt_install(T_DIVIDE, divzero);
 
 
