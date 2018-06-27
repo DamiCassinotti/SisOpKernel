@@ -2,6 +2,9 @@
 #define KERN2_DECL_H
 
 #include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 
 struct multiboot_info;
 /*
@@ -21,6 +24,8 @@ void two_stacks(void);
 
 // write.c
 void vga_write(const char *s, int8_t linea, uint8_t color);
+__attribute__((regparm(2))) void vga_write_cyan(const char *s, int8_t linea);
+bool fmt_int(uint64_t val, char *s, size_t bufsize);
 
 // tasks.S
 void task_exec(uintptr_t entry, uintptr_t stack);
@@ -45,7 +50,5 @@ void timer_asm(void);
 // handlers.c
 void timer(void);
 // void keyboard(void);
-
-__attribute__((regparm(2))) void vga_write_cyan(const char *s, int8_t linea);
 
 #endif
