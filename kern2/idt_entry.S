@@ -65,3 +65,15 @@ divzero:
 .data
 divzero_msg:
     .asciz "Se divide por ++ebx"
+
+.globl keyboard_asm
+keyboard_asm:
+	push %eax
+	push %edx
+	push %ecx
+
+	call keyboard
+	pop %ecx
+	pop %edx
+	pop %eax
+    jmp ack_irq

@@ -46,8 +46,7 @@ void divzero(void);
 void breakpoint(void);
 void ack_irq(void);
 void timer_asm(void);
-// void keyboard_asm(void);
-
+void keyboard_asm(void);
 
 // handlers.c
 void timer(void);
