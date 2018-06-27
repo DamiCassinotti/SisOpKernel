@@ -5,11 +5,13 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include "multiboot.h"
+#include "lib/string.h"
 
 struct multiboot_info;
-/*
+
 // mbinfo.c (ejercicio opcional kern2-meminfo)
-void print_mbinfo(const struct multiboot_info *mbi);*/
+void print_mbinfo(const struct multiboot_info *mbi);
 
 // funcs.S
 __attribute__((regparm(3))) void vga_write2(const char *s,

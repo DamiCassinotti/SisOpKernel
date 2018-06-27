@@ -4,7 +4,7 @@ KERN := kern2
 BOOT := -kernel $(KERN) $(QEMU_EXTRA)
 LIBGCC := $(shell $(CC) $(CFLAGS) -print-libgcc-file-name)
 
-kern2: boot.o stacks.o tasks.o funcs.o contador.o idt_entry.o interrupts.o handlers.o write.o lib/string.o kern2.o
+kern2: boot.o mbinfo.o stacks.o tasks.o funcs.o contador.o idt_entry.o interrupts.o handlers.o write.o lib/string.o kern2.o
 	ld -m elf_i386 -Ttext 0x100000 --entry _start $^ $(LIBGCC) -o $@
 	# Verificar imagen Multiboot v1.
 	grub-file --is-x86-multiboot $@
