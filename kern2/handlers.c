@@ -1,8 +1,9 @@
 #include "decls.h"
-#include <stdbool.h>
+
+#define SHIFT_CODE '^'
 
 // static unsigned ticks;
-// 
+//
 // void timer() {
 //     if (++ticks == 15) {
 //         vga_write("Transcurrieron 15 ticks", 20, 0x07);
@@ -40,7 +41,7 @@ static char klayout[128] = {
     '9', '0', 0,   0,   0,   0,   'q', 'w', 'e', 'r',             // 10-19
     't', 'y', 'u', 'i', 'o', 'p', 0,   0,   0,   0,               // 20-29
     'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 0,   0,          // 30-40
-    0,   0,   0,   'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.'};  // 41-52
+    0, SHIFT_CODE,   0,   'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', 0, SHIFT_CODE};  // 41-54
 
 static const uint8_t KBD_PORT = 0x60;
 
@@ -53,17 +54,32 @@ void keyboard() {
     uint8_t code;
     static char chars[81];
     static uint8_t idx = 0;
+	static uint8_t is_shift_pressed = 0;
 
     asm volatile("inb %1,%0" : "=a"(code) : "n"(KBD_PORT));
 
-    if (code >= sizeof(klayout) || !klayout[code])
-        return;
+	if (code & 0x80) {
+		code = code & 0x7F; //Tiro el bit mas significativo
+		if (klayout[code] == SHIFT_CODE)
+			is_shift_pressed = 0;
+	} else {
+		if (code >= sizeof(klayout) || !klayout[code])
+	        return;
 
-    if (idx == 80) {
-        while (idx--)
-            chars[idx] = ' ';
-    }
+		if (klayout[code] == SHIFT_CODE) {
+			is_shift_pressed = 1;
+			return;
+		}
 
-    chars[idx++] = klayout[code];
-    vga_write(chars, 19, 0x0A);
+	    if (idx == 80) {
+			code = code;
+	        while (idx--)
+	            chars[idx] = ' ';
+	    }
+
+		chars[idx++] = klayout[code];
+		if (is_shift_pressed)
+	    	chars[idx - 1] -= 32;
+	    vga_write(chars, 19, 0x0A);
+	}
 }
