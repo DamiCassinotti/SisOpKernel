@@ -9,10 +9,6 @@ static struct Task *current;
 void sched_init() {
 	current = &Tasks[0];
     current->status = RUNNING;
-	for (int i = 1; i < MAX_TASK; i++) {
-		struct Task *task = &Tasks[i];
-		task->status = FREE;
-	}
 }
 
 void spawn(void (*entry)(void)) {
