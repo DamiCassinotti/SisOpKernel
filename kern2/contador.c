@@ -97,6 +97,6 @@ static void contador3() {
 
 void contador_spawn() {
     spawn(contador1);
-    //spawn(contador2);
-    //spawn(contador3);
+    spawn(contador2);
+    spawn(contador3);
 }

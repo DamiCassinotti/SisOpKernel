@@ -20,7 +20,7 @@ void spawn(void (*entry)(void)) {
 		struct Task *task = &Tasks[i];
 		if (task->status == FREE) {
 			task->status = READY;
-			uint8_t stack = task->stack[4096];
+			uint8_t* stack = &(task->stack[4096]);
 			size_t size = sizeof(struct TaskFrame);
     		stack -= size;
     		task->frame = (struct TaskFrame *) stack;
@@ -33,9 +33,9 @@ void spawn(void (*entry)(void)) {
 		    task->frame->ecx = 0;
 		    task->frame->eax = 0;
 		    task->frame->padding = 0;
-			task->frame->eip = (uint32_t)entry;
+			task->frame->eip = (uint32_t) entry;
 			task->frame->eflags |= 0x200;
-			task->frame->cs = 0xE;
+			task->frame->cs = 8;
 			return;
 		}
 	}
@@ -47,12 +47,16 @@ void sched(struct TaskFrame *tf) {
 		i++;
 	if (i == MAX_TASK)
 		return;
-	int next = i + 1;
-	if (next == MAX_TASK)
-		next = 0;
 	current->status = READY;
 	current->frame = tf;
-	current = &Tasks[next];
+	i++;
+	// No genera ciclo infinito porque por lo menos un task está en running
+	while (Tasks[i].status != READY) {
+		i++;
+		if (i == MAX_TASK)
+			i = 0;
+	}
+	current = &Tasks[i];
 	current->status = RUNNING;
 	asm("movl %0, %%esp\n"
 	    "popa\n"
