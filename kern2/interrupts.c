@@ -32,6 +32,7 @@ static void irq_remap() {
 
 void idt_init(void) {
 	idt_install(T_BRKPT, breakpoint);
+	idt_install(T_DIVIDE, divzero);
 
 	idtr.base = (uintptr_t) idt;
 	idtr.limit = sizeof(idt) - 1;
@@ -58,7 +59,7 @@ void irq_init() {
 
     // (2) Instalar manejadores.
 	idt_install(T_TIMER, timer_asm);
-    idt_install(T_KEYBOARD, ack_irq);
+    idt_install(T_KEYBOARD, keyboard_asm);
 
     // (3) Habilitar interrupciones.
     asm("sti");

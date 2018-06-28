@@ -14,9 +14,9 @@ breakpoint:
 	// (3) Invocar a vga_write2()
 	call vga_write2
 	// (4) Restaurar registros.
-	pop %eax
-	pop %edx
 	pop %ecx
+	pop %edx
+	pop %eax
 	// (5) Finalizar ejecución del manejador.
 	iret
 
@@ -33,14 +33,53 @@ ack_irq:
 
 .globl timer_asm
 timer_asm:
+    // Guardar registros e invocar handler
+    pusha
+    call timer
+
+    // Ack *antes* de llamar a sched()
+    movl $ACK_IRQ, %eax
+    outb %al, $PIC1
+
+    // Llamada a sched con argumento
+    push %esp
+    call sched
+
+    // Retornar (si se volvió de sched)
+    addl $4, %esp
+    popa
+    iret
+
+
+.globl divzero
+divzero:
     // Guardar registros.
 	push %eax
 	push %edx
 	push %ecx
 
-    call timer
+	inc %ebx
+	movl $divzero_msg, %eax
+	movl $17, %edx
+    call vga_write_cyan
     // Restaurar registros.
-	pop %eax
-	pop %edx
 	pop %ecx
+	pop %edx
+	pop %eax
+    iret
+
+.data
+divzero_msg:
+    .asciz "Se divide por ++ebx"
+
+.globl keyboard_asm
+keyboard_asm:
+	push %eax
+	push %edx
+	push %ecx
+
+	call keyboard
+	pop %ecx
+	pop %edx
+	pop %eax
     jmp ack_irq

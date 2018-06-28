@@ -1,27 +1,30 @@
 #include "decls.h"
-#include "multiboot.h"
-#include "lib/string.h"
+#include "sched.h"
 #define USTACK_SIZE 4096
 
 void kmain(const multiboot_info_t *mbi) {
+	int8_t linea;
+    uint8_t color;
+
 	vga_write("kern2 loading.............", 8, 0x70);
 
-	if (mbi->flags & (1<<2)) {
-        char buf[256] = "cmdline: ";
-        char *cmdline = (void *) mbi->cmdline;
-		strlcat(buf, cmdline, sizeof buf);
-        vga_write(buf, 9, 0x07);
-    }
+	print_mbinfo(mbi);
 
 	two_stacks();
 	two_stacks_c();
 	contador_run();
 
-    idt_init();
+	sched_init();
+	idt_init();
 	irq_init();
-    asm("int3");
+	asm("int3");
+	asm("div %4"
+        : "=a"(linea), "=c"(color)
+        : "0"(18), "1"(0xE0), "b"(0), "d"(0));
 
-	vga_write2("Funciona vga_write2?", 18, 0xE0);
+	contador_spawn();
+
+	vga_write2("Funciona vga_write2?", linea, color);
 }
 
 static uint8_t stack1[USTACK_SIZE] __attribute__((aligned(4096)));
